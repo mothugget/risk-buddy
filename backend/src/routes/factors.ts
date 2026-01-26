@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { pool } from './db.js';
-import type { Factor, CreateFactorInput, UpdateFactorInput } from './types.js';
+import { pool } from '../db';
+import type { Factor, CreateFactorInput, UpdateFactorInput } from '../types';
 
 const router = Router();
 

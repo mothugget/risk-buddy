@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import factorsRouter from './routes/factors.js';
-import projectsRouter from './routes/projects.js';
+import factorsRouter from './routes/factors';
+import projectsRouter from './routes/projects';
 
 dotenv.config();
 

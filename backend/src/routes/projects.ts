@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { pool } from './db.js';
-import type { Project, Factor, Score, ProjectWithScores, CreateProjectInput } from './types.js';
+import { pool } from '../db';
+import type { Project, Factor, Score, ProjectWithScores, CreateProjectInput } from '../types';
 
 const router = Router();
 
