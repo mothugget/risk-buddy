@@ -33,7 +33,7 @@ async function fetchApi<T>(
   // Only parse JSON if there is a body
   const contentType = response.headers.get("content-type");
   if (contentType && contentType.includes("application/json")) {
-    return response.json();
+    return response.json() as T;
   }
 
   // If no JSON, return undefined (safe fallback)
@@ -42,7 +42,10 @@ async function fetchApi<T>(
 
 // Factors API
 export const factorsApi = {
-  getAll: () => fetchApi<Factor[]>("/factors"),
+  getAll: async () => {
+    const data = await fetchApi<Factor[]>("/factors");
+    return data.map(f => ({ ...f, weight: Number(f.weight) }));
+  },
 
   create: (data: CreateFactorInput) =>
     fetchApi<Factor>("/factors", {

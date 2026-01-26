@@ -112,6 +112,8 @@ export function FactorList() {
 
   const totalWeight = factors?.reduce((sum, f) => sum + f.weight, 0) || 0;
 
+  console.log(totalWeight)
+
   return (
     <Card>
       <CardHeader>
