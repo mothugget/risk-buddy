@@ -20,6 +20,7 @@ router.get('/', async (req, res) => {
 // POST create factor
 router.post('/', async (req, res) => {
   try {
+    console.log(req.body)
     const { name, weight } = req.body as CreateFactorInput;
     
     if (!name || typeof weight !== 'number') {
@@ -83,7 +84,6 @@ router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const result = await pool.query('DELETE FROM factors WHERE id = $1 RETURNING id', [id]);
-
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'Factor not found' });
     }
