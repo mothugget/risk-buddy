@@ -5,9 +5,40 @@ import type {
   CreateFactorInput,
   UpdateFactorInput,
   CreateProjectInput,
+  Score,
+  FactorApi,
+  ScoreApi,
+  ProjectApi
 } from "@/types";
 
 const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
+
+function normalizeFactor(api: FactorApi): Factor {
+  return {
+    ...api,
+    weight: Number(api.weight),
+  };
+}
+
+function normalizeScore(api: ScoreApi): Score {
+  return {
+    ...api,
+    score: Number(api.score),
+    factor: api.factor ? normalizeFactor(api.factor) : undefined,
+  };
+}
+
+function normalizeProject(api: ProjectApi): Project {
+  return {
+    ...api,
+    overall_score:
+      api.overall_score !== undefined
+        ? Number(api.overall_score)
+        : undefined,
+    scores: api.scores?.map(normalizeScore),
+  };
+}
+
 
 async function fetchApi<T>(
   endpoint: string,
@@ -44,7 +75,7 @@ async function fetchApi<T>(
 export const factorsApi = {
   getAll: async () => {
     const data = await fetchApi<Factor[]>("/factors");
-    return data.map(f => ({ ...f, weight: Number(f.weight) }));
+    return data.map(normalizeFactor);
   },
 
   create: (data: CreateFactorInput) =>
@@ -67,9 +98,9 @@ export const factorsApi = {
 
 // Projects API
 export const projectsApi = {
-  getAll: () => fetchApi<ProjectWithScores[]>("/projects"),
+  getAll: async () => { const data = await fetchApi<ProjectWithScores[]>("/projects"); return data.map(normalizeProject) },
 
-  getById: (id: string) => fetchApi<ProjectWithScores>(`/projects/${id}`),
+  getById: async (id: string) => { const data = await fetchApi<ProjectWithScores>(`/projects/${id}`); return normalizeProject(data) },
 
   create: (data: CreateProjectInput) =>
     fetchApi<Project>("/projects", {

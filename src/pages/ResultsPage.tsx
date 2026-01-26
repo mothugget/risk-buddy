@@ -61,7 +61,6 @@ export default function ResultsPage() {
       contribution,
     };
   });
-
   const { color } = getRiskLevel(project.overall_score);
 
   return (
@@ -132,8 +131,9 @@ export default function ResultsPage() {
                     </TableCell>
                     <TableCell className='text-right font-medium'>
                       <RiskBadge
-                        score={item.contribution.toFixed(1)}
+                        score={item.contribution}
                         showLabel={false}
+                        decimals={1}
                       />
                     </TableCell>
                   </TableRow>
