@@ -20,7 +20,6 @@ router.get('/', async (req, res) => {
 // POST create factor
 router.post('/', async (req, res) => {
   try {
-    console.log(req.body)
     const { name, weight } = req.body as CreateFactorInput;
     
     if (!name || typeof weight !== 'number') {
