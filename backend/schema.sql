@@ -8,7 +8,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS factors (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name TEXT NOT NULL,
-    consequence NUMERIC NOT NULL DEFAULT 1,
+    consequence NUMERIC NOT NULL DEFAULT 1 CHECK (consequence >= 1 AND consequence <= 10),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 

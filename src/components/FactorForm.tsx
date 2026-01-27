@@ -29,34 +29,41 @@ export function FactorForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg">Add New Factor</CardTitle>
+        <CardTitle className='text-lg'>Add New Factor</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:flex-row sm:items-end">
-          <div className="flex-1 space-y-2">
-            <Label htmlFor="name">Factor Name</Label>
+        <form
+          onSubmit={handleSubmit}
+          className='flex flex-col gap-4 sm:flex-row sm:items-end'
+        >
+          <div className='flex-1 space-y-2'>
+            <Label htmlFor='name'>Factor Name</Label>
             <Input
-              id="name"
-              placeholder="e.g., Maintenance Activity"
+              id='name'
+              placeholder='e.g., Maintenance Activity'
               value={name}
               onChange={(e) => setName(e.target.value)}
               maxLength={100}
             />
           </div>
-          <div className="w-full sm:w-32 space-y-2">
-            <Label htmlFor="consequence">Consequence</Label>
+          <div className='w-full sm:w-32 space-y-2'>
+            <Label htmlFor='consequence'>Consequence</Label>
             <Input
-              id="consequence"
-              type="number"
-              placeholder="e.g., 25"
+              id='consequence'
+              type='number'
+              placeholder='e.g., 3'
               value={consequence}
               onChange={(e) => setConsequence(e.target.value)}
-              min="1"
-              max="100"
+              min='1'
+              max='10'
+              step={1}
             />
           </div>
-          <Button type="submit" disabled={createFactor.isPending || !name.trim() || !consequence}>
-            <Plus className="h-4 w-4 mr-1" />
+          <Button
+            type='submit'
+            disabled={createFactor.isPending || !name.trim() || !consequence}
+          >
+            <Plus className='h-4 w-4 mr-1' />
             Add
           </Button>
         </form>

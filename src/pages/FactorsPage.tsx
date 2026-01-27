@@ -9,7 +9,7 @@ export default function FactorsPage() {
         <div>
           <h1 className="text-3xl font-bold">Risk Factors</h1>
           <p className="text-muted-foreground mt-1">
-            Define the factors you'll use to assess OSS project risk. Weights are automatically normalized.
+            Define the factors you'll use to assess OSS project risk.
           </p>
         </div>
         <FactorForm />
