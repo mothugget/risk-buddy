@@ -14,8 +14,6 @@ function FactorRow({ factor, totalConsequence }: { factor: Factor; totalConseque
   const updateFactor = useUpdateFactor();
   const deleteFactor = useDeleteFactor();
 
-  const normalizedConsequence = totalConsequence > 0 ? (factor.consequence / totalConsequence) * 100 : 0;
-
   const handleSave = () => {
     updateFactor.mutate(
       { id: factor.id, data: { name: editName.trim(), consequence: parseFloat(editConsequence) } },
@@ -61,10 +59,7 @@ function FactorRow({ factor, totalConsequence }: { factor: Factor; totalConseque
       <div className="flex-1">
         <p className="font-medium">{factor.name}</p>
         <div className="flex items-center gap-2 mt-1">
-          <Progress value={normalizedConsequence} className="h-2 flex-1" />
-          <span className="text-sm text-muted-foreground w-16">
-            {normalizedConsequence.toFixed(1)}%
-          </span>
+          <Progress value={factor.consequence*10} className="h-2 flex-1" />
         </div>
       </div>
       <div className="text-sm text-muted-foreground">
