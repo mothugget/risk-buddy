@@ -45,7 +45,6 @@ const totalConsequence = factors?factors.length * 10:0;
       factor_id: factor.id,
       probability: scores[factor.id] ?? 50,
     }));
-    console.log(overallScore)
     createProject.mutate(
       { name: projectName.trim(), scores: scoreData, overall_score:overallScore},
       {

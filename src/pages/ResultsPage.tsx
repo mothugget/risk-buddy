@@ -15,6 +15,7 @@ import { useProject } from '@/hooks/useProjects';
 import { RiskBadge, getRiskLevel } from '@/components/RiskBadge';
 import { Loader2, ArrowLeft, AlertCircle } from 'lucide-react';
 import { format } from 'date-fns';
+import { RiskFont } from '@/components/ui/RiskFont';
 
 export default function ResultsPage() {
   const { id } = useParams<{ id: string }>();
@@ -47,18 +48,16 @@ export default function ResultsPage() {
   }
 
   // Calculate factor contributions
-  const totalConsequence = project.scores.reduce(
-    (sum, s) => sum + (s.factor?.consequence || 0),
-    0
-  );
+  const totalConsequence = project.scores.length * 10;
+  const normalisedScore=100 * project.overall_score/totalConsequence;
   const contributions = project.scores.map((score) => {
     const consequence = score.factor?.consequence || 0;
-    const normalizedconsequence = totalConsequence > 0 ? (consequence / totalConsequence) * 100 : 0;
-    const contribution = (score.probability * normalizedconsequence) / 100;
+
+    const contribution = (score.probability * consequence) / 100;
     return {
       ...score,
-      normalizedconsequence,
       contribution,
+      consequence,
     };
   });
   const { color } = getRiskLevel(project.overall_score);
@@ -91,13 +90,13 @@ export default function ResultsPage() {
               <p className='text-6xl font-bold mb-4'>
                 {Math.round(project.overall_score)}
               </p>
-              <RiskBadge score={project.overall_score} />
+              <RiskBadge score={normalisedScore} />
             </div>
             <div className='mt-6'>
-              <Progress value={project.overall_score} className='h-3' />
+              <Progress value={normalisedScore} className='h-3' />
               <div className='flex justify-between text-xs text-muted-foreground mt-1'>
                 <span>0 - Low Risk</span>
-                <span>100 - High Risk</span>
+                <span>{totalConsequence} - High Risk</span>
               </div>
             </div>
           </CardContent>
@@ -112,8 +111,8 @@ export default function ResultsPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Factor</TableHead>
-                  <TableHead className='text-center'>Score</TableHead>
-                  <TableHead className='text-center'>consequence</TableHead>
+                  <TableHead className='text-center'>Consequence</TableHead>
+                  <TableHead className='text-center'>Probability</TableHead>
                   <TableHead className='text-right'>Contribution</TableHead>
                 </TableRow>
               </TableHeader>
@@ -123,18 +122,14 @@ export default function ResultsPage() {
                     <TableCell className='font-medium'>
                       {item.factor?.name || 'Unknown Factor'}
                     </TableCell>
-                    <TableCell className='text-center'>
-                      <RiskBadge score={item.probability} showLabel={false} />
-                    </TableCell>
                     <TableCell className='text-center text-muted-foreground'>
-                      {item.normalizedconsequence.toFixed(1)}%
+                    <RiskBadge score={item.consequence*10} showLabel={false}/>
                     </TableCell>
-                    <TableCell className='text-right font-medium'>
-                      <RiskBadge
-                        score={item.contribution}
-                        showLabel={false}
-                        decimals={1}
-                      />
+                    <TableCell className='text-center'>
+                      <RiskFont score={item.probability} />
+                    </TableCell>
+                    <TableCell className='text-right font-medium text-muted-foreground'>
+                      {item.contribution}
                     </TableCell>
                   </TableRow>
                 ))}
