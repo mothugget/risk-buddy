@@ -102,7 +102,7 @@ const totalConsequence = factors?factors.length * 10:0;
         <div>
           <h1 className='text-3xl font-bold'>New Assessment</h1>
           <p className='text-muted-foreground mt-1'>
-            Score the probability of each factor.
+            Score the probability in this project of each factor occuring.
           </p>
         </div>
 
