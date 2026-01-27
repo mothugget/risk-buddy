@@ -16,7 +16,7 @@ const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3001/api";
 function normalizeFactor(api: FactorApi): Factor {
   return {
     ...api,
-    weight: Number(api.weight),
+     consequence: Number(api. consequence),
   };
 }
 

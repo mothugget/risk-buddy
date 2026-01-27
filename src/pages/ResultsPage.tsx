@@ -47,17 +47,17 @@ export default function ResultsPage() {
   }
 
   // Calculate factor contributions
-  const totalWeight = project.scores.reduce(
-    (sum, s) => sum + (s.factor?.weight || 0),
+  const totalConsequence = project.scores.reduce(
+    (sum, s) => sum + (s.factor?.consequence || 0),
     0
   );
   const contributions = project.scores.map((score) => {
-    const weight = score.factor?.weight || 0;
-    const normalizedWeight = totalWeight > 0 ? (weight / totalWeight) * 100 : 0;
-    const contribution = (score.score * normalizedWeight) / 100;
+    const consequence = score.factor?.consequence || 0;
+    const normalizedconsequence = totalConsequence > 0 ? (consequence / totalConsequence) * 100 : 0;
+    const contribution = (score.score * normalizedconsequence) / 100;
     return {
       ...score,
-      normalizedWeight,
+      normalizedconsequence,
       contribution,
     };
   });
@@ -113,7 +113,7 @@ export default function ResultsPage() {
                 <TableRow>
                   <TableHead>Factor</TableHead>
                   <TableHead className='text-center'>Score</TableHead>
-                  <TableHead className='text-center'>Weight</TableHead>
+                  <TableHead className='text-center'>consequence</TableHead>
                   <TableHead className='text-right'>Contribution</TableHead>
                 </TableRow>
               </TableHeader>
@@ -127,7 +127,7 @@ export default function ResultsPage() {
                       <RiskBadge score={item.score} showLabel={false} />
                     </TableCell>
                     <TableCell className='text-center text-muted-foreground'>
-                      {item.normalizedWeight.toFixed(1)}%
+                      {item.normalizedconsequence.toFixed(1)}%
                     </TableCell>
                     <TableCell className='text-right font-medium'>
                       <RiskBadge

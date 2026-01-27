@@ -8,19 +8,19 @@ import { Plus } from "lucide-react";
 
 export function FactorForm() {
   const [name, setName] = useState("");
-  const [weight, setWeight] = useState("");
+  const [consequence, setConsequence] = useState("");
   const createFactor = useCreateFactor();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !weight) return;
+    if (!name.trim() || !consequence) return;
 
     createFactor.mutate(
-      { name: name.trim(), weight: parseFloat(weight) },
+      { name: name.trim(), consequence: parseFloat(consequence) },
       {
         onSuccess: () => {
           setName("");
-          setWeight("");
+          setConsequence("");
         },
       }
     );
@@ -44,18 +44,18 @@ export function FactorForm() {
             />
           </div>
           <div className="w-full sm:w-32 space-y-2">
-            <Label htmlFor="weight">Weight</Label>
+            <Label htmlFor="consequence">Consequence</Label>
             <Input
-              id="weight"
+              id="consequence"
               type="number"
               placeholder="e.g., 25"
-              value={weight}
-              onChange={(e) => setWeight(e.target.value)}
+              value={consequence}
+              onChange={(e) => setConsequence(e.target.value)}
               min="1"
               max="100"
             />
           </div>
-          <Button type="submit" disabled={createFactor.isPending || !name.trim() || !weight}>
+          <Button type="submit" disabled={createFactor.isPending || !name.trim() || !consequence}>
             <Plus className="h-4 w-4 mr-1" />
             Add
           </Button>

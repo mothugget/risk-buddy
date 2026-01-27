@@ -22,19 +22,19 @@ export default function AssessmentPage() {
     setScores((prev) => ({ ...prev, [factorId]: value }));
   };
 
-  // Calculate overall weighted score
+  // Calculate overall Consequence X score
   const calculateOverallScore = () => {
     if (!factors || factors.length === 0) return 0;
-    const totalWeight = factors.reduce((sum, f) => sum + f.weight, 0);
-    if (totalWeight === 0) return 0;
+    const totalConsequence = factors.reduce((sum, f) => sum + f.consequence, 0);
+    if (totalConsequence === 0) return 0;
 
-    let weightedSum = 0;
+    let consequenceSum = 0;
     factors.forEach((factor) => {
       const score = scores[factor.id] ?? 50;
-      const normalizedWeight = factor.weight / totalWeight;
-      weightedSum += score * normalizedWeight;
+      const normalizedConsequence = factor.consequence / totalConsequence;
+      consequenceSum += score * normalizedConsequence;
     });
-    return weightedSum;
+    return consequenceSum;
   };
 
   const overallScore = calculateOverallScore();

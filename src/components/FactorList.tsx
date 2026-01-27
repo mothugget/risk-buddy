@@ -7,25 +7,25 @@ import { useFactors, useUpdateFactor, useDeleteFactor } from "@/hooks/useFactors
 import { Pencil, Trash2, Check, X, Loader2 } from "lucide-react";
 import type { Factor } from "@/types";
 
-function FactorRow({ factor, totalWeight }: { factor: Factor; totalWeight: number }) {
+function FactorRow({ factor, totalConsequence }: { factor: Factor; totalConsequence: number }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(factor.name);
-  const [editWeight, setEditWeight] = useState(factor.weight.toString());
+  const [editConsequence, setEditConsequence] = useState(factor.consequence.toString());
   const updateFactor = useUpdateFactor();
   const deleteFactor = useDeleteFactor();
 
-  const normalizedWeight = totalWeight > 0 ? (factor.weight / totalWeight) * 100 : 0;
+  const normalizedConsequence = totalConsequence > 0 ? (factor.consequence / totalConsequence) * 100 : 0;
 
   const handleSave = () => {
     updateFactor.mutate(
-      { id: factor.id, data: { name: editName.trim(), weight: parseFloat(editWeight) } },
+      { id: factor.id, data: { name: editName.trim(), consequence: parseFloat(editConsequence) } },
       { onSuccess: () => setIsEditing(false) }
     );
   };
 
   const handleCancel = () => {
     setEditName(factor.name);
-    setEditWeight(factor.weight.toString());
+    setEditConsequence(factor.consequence.toString());
     setIsEditing(false);
   };
 
@@ -40,8 +40,8 @@ function FactorRow({ factor, totalWeight }: { factor: Factor; totalWeight: numbe
         />
         <Input
           type="number"
-          value={editWeight}
-          onChange={(e) => setEditWeight(e.target.value)}
+          value={editConsequence}
+          onChange={(e) => setEditConsequence(e.target.value)}
           className="w-20"
           min="1"
           max="100"
@@ -61,14 +61,14 @@ function FactorRow({ factor, totalWeight }: { factor: Factor; totalWeight: numbe
       <div className="flex-1">
         <p className="font-medium">{factor.name}</p>
         <div className="flex items-center gap-2 mt-1">
-          <Progress value={normalizedWeight} className="h-2 flex-1" />
+          <Progress value={normalizedConsequence} className="h-2 flex-1" />
           <span className="text-sm text-muted-foreground w-16">
-            {normalizedWeight.toFixed(1)}%
+            {normalizedConsequence.toFixed(1)}%
           </span>
         </div>
       </div>
       <div className="text-sm text-muted-foreground">
-        Weight: {factor.weight}
+        Consequence: {factor.consequence}
       </div>
       <div className="flex gap-1">
         <Button size="icon" variant="ghost" onClick={() => setIsEditing(true)}>
@@ -110,7 +110,7 @@ export function FactorList() {
     );
   }
 
-  const totalWeight = factors?.reduce((sum, f) => sum + f.weight, 0) || 0;
+  const totalConsequence = factors?.reduce((sum, f) => sum + f.consequence, 0) || 0;
 
   return (
     <Card>
@@ -124,7 +124,7 @@ export function FactorList() {
           </p>
         ) : (
           factors?.map((factor) => (
-            <FactorRow key={factor.id} factor={factor} totalWeight={totalWeight} />
+            <FactorRow key={factor.id} factor={factor} totalConsequence={totalConsequence} />
           ))
         )}
       </CardContent>
