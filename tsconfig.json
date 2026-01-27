@@ -9,9 +9,10 @@
     "noImplicitAny": false,
     "noUnusedParameters": false,
     "skipLibCheck": true,
+    "types": ["react", "react-dom"],
     "allowJs": true,
     "noUnusedLocals": false,
     "strictNullChecks": false,
-    "jsx": "react-jsx",
+    "jsx": "react-jsx"
   }
 }
