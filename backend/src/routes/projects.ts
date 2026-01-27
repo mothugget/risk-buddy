@@ -8,16 +8,16 @@ const router = Router();
 function calculateOverallScore(scores: (Score & { factor: Factor })[]): number {
   if (scores.length === 0) return 0;
   
-  const totalWeight = scores.reduce((sum, s) => sum + (s.factor?.weight || 0), 0);
-  if (totalWeight === 0) return 0;
+  const totalConsequence = scores.reduce((sum, s) => sum + (s.factor?.consequence || 0), 0);
+  if (totalConsequence === 0) return 0;
 
-  let weightedSum = 0;
+  let consequenceSum = 0;
   scores.forEach((score) => {
-    const normalizedWeight = (score.factor?.weight || 0) / totalWeight;
-    weightedSum += score.score * normalizedWeight;
+    const normalizedConsequence = (score.factor?.consequence || 0) / totalConsequence;
+    consequenceSum += score.score * normalizedConsequence;
   });
   
-  return weightedSum;
+  return consequenceSum;
 }
 
 // GET all projects with scores
@@ -31,7 +31,7 @@ router.get('/', async (req, res) => {
       projectsResult.rows.map(async (project) => {
         const scoresResult = await pool.query<Score & { factor: Factor }>(
           `SELECT s.*, 
-                  json_build_object('id', f.id, 'name', f.name, 'weight', f.weight, 'created_at', f.created_at) as factor
+                  json_build_object('id', f.id, 'name', f.name, 'consequence', f.consequence, 'created_at', f.created_at) as factor
            FROM scores s
            JOIN factors f ON s.factor_id = f.id
            WHERE s.project_id = $1`,
@@ -76,7 +76,7 @@ router.get('/:id', async (req, res) => {
 
     const scoresResult = await pool.query<Score & { factor: Factor }>(
       `SELECT s.*, 
-              json_build_object('id', f.id, 'name', f.name, 'weight', f.weight, 'created_at', f.created_at) as factor
+              json_build_object('id', f.id, 'name', f.name, 'consequence', f.consequence, 'created_at', f.created_at) as factor
        FROM scores s
        JOIN factors f ON s.factor_id = f.id
        WHERE s.project_id = $1`,

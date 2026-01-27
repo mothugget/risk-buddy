@@ -20,15 +20,15 @@ router.get('/', async (req, res) => {
 // POST create factor
 router.post('/', async (req, res) => {
   try {
-    const { name, weight } = req.body as CreateFactorInput;
+    const { name, consequence } = req.body as CreateFactorInput;
     
-    if (!name || typeof weight !== 'number') {
-      return res.status(400).json({ message: 'Name and weight are required' });
+    if (!name || typeof consequence !== 'number') {
+      return res.status(400).json({ message: 'Name and consequence are required' });
     }
 
     const result = await pool.query<Factor>(
-      'INSERT INTO factors (name, weight) VALUES ($1, $2) RETURNING *',
-      [name.trim(), weight]
+      'INSERT INTO factors (name, consequence) VALUES ($1, $2) RETURNING *',
+      [name.trim(), consequence]
     );
     
     res.status(201).json(result.rows[0]);
@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, weight } = req.body as UpdateFactorInput;
+    const { name, consequence } = req.body as UpdateFactorInput;
     
     const updates: string[] = [];
     const values: (string | number)[] = [];
@@ -52,9 +52,9 @@ router.put('/:id', async (req, res) => {
       updates.push(`name = $${paramCount++}`);
       values.push(name.trim());
     }
-    if (weight !== undefined) {
-      updates.push(`weight = $${paramCount++}`);
-      values.push(weight);
+    if (consequence !== undefined) {
+      updates.push(`consequence = $${paramCount++}`);
+      values.push(consequence);
     }
 
     if (updates.length === 0) {

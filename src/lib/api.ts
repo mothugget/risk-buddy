@@ -78,11 +78,11 @@ export const factorsApi = {
     return data.map(normalizeFactor);
   },
 
-  create: (data: CreateFactorInput) =>
+  create: (data: CreateFactorInput) =>{
     fetchApi<Factor>("/factors", {
       method: "POST",
       body: JSON.stringify(data),
-    }),
+    })},
 
   update: (id: string, data: UpdateFactorInput) =>
     fetchApi<Factor>(`/factors/${id}`, {

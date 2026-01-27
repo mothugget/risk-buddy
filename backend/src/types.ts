@@ -1,7 +1,7 @@
 export interface Factor {
   id: string;
   name: string;
-  weight: number;
+  consequence: number;
   created_at: string;
 }
 
@@ -26,12 +26,12 @@ export interface ProjectWithScores extends Project {
 
 export interface CreateFactorInput {
   name: string;
-  weight: number;
+  consequence: number;
 }
 
 export interface UpdateFactorInput {
   name?: string;
-  weight?: number;
+  consequence?: number;
 }
 
 export interface CreateProjectInput {

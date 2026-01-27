@@ -8,7 +8,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE TABLE IF NOT EXISTS factors (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name TEXT NOT NULL,
-    weight NUMERIC NOT NULL DEFAULT 1,
+    consequence NUMERIC NOT NULL DEFAULT 1,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
@@ -34,7 +34,7 @@ CREATE INDEX IF NOT EXISTS idx_scores_project_id ON scores(project_id);
 CREATE INDEX IF NOT EXISTS idx_scores_factor_id ON scores(factor_id);
 
 -- Sample factors (optional - remove if you want to start fresh)
--- INSERT INTO factors (name, weight) VALUES
+-- INSERT INTO factors (name, consequence) VALUES
 --     ('Maintenance Activity', 25),
 --     ('Community Size', 20),
 --     ('Security History', 30),
