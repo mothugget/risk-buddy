@@ -33,7 +33,7 @@ export default function AssessmentPage() {
     return consequenceSum;
   };
 
-const totalConsequence = factors.length * 10;
+const totalConsequence = factors?factors.length * 10:0;
 
   const overallScore = calculateOverallScore();
 
@@ -45,9 +45,9 @@ const totalConsequence = factors.length * 10;
       factor_id: factor.id,
       score: scores[factor.id] ?? 50,
     }));
-
+    console.log(overallScore)
     createProject.mutate(
-      { name: projectName.trim(), scores: scoreData },
+      { name: projectName.trim(), scores: scoreData, overall_score:overallScore},
       {
         onSuccess: () => {
           navigate("/history");

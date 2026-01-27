@@ -88,7 +88,7 @@ router.post('/', async (req, res) => {
   const client = await pool.connect();
   
   try {
-    const { name, scores } = req.body as CreateProjectInput;
+    const { name, scores, overall_score } = req.body as CreateProjectInput;
     
     if (!name || !scores || !Array.isArray(scores)) {
       return res.status(400).json({ message: 'Name and scores are required' });
@@ -98,8 +98,8 @@ router.post('/', async (req, res) => {
 
     // Create project
     const projectResult = await client.query<Project>(
-      'INSERT INTO projects (name) VALUES ($1) RETURNING *',
-      [name.trim()]
+      'INSERT INTO projects (name, overall_score) VALUES ($1, $2) RETURNING *',
+      [name.trim(), overall_score]
     );
     const project = projectResult.rows[0];
 

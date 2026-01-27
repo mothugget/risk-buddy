@@ -39,6 +39,7 @@ export interface UpdateFactorInput {
 
 export interface CreateProjectInput {
   name: string;
+  overall_score: number;
   scores: { factor_id: string; score: number }[];
 }
 
