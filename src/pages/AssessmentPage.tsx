@@ -102,7 +102,7 @@ const totalConsequence = factors?factors.length * 10:0;
         <div>
           <h1 className='text-3xl font-bold'>New Assessment</h1>
           <p className='text-muted-foreground mt-1'>
-            Score each factor from 0 (lowest risk) to 100 (highest risk).
+            Score the probability of each factor.
           </p>
         </div>
 
@@ -127,7 +127,7 @@ const totalConsequence = factors?factors.length * 10:0;
 
           <Card>
             <CardHeader>
-              <CardTitle className='text-lg'>Factor Scores</CardTitle>
+              <CardTitle className='text-lg'>Factor Probabilities</CardTitle>
             </CardHeader>
             <CardContent className='space-y-6'>
               {factors.map((factor) => {
@@ -137,7 +137,7 @@ const totalConsequence = factors?factors.length * 10:0;
                   <div key={factor.id} className='space-y-3'>
                     <div className='flex items-center justify-between'>
                       <Label className='text-base'>{factor.name}</Label>
-                      <span className='text-lg font-semibold'>{score}</span>
+                      <span className='text-lg font-semibold'>{score}%</span>
                     </div>
                     <Slider
                       value={[score]}
@@ -147,8 +147,8 @@ const totalConsequence = factors?factors.length * 10:0;
                       className='w-full'
                     />
                     <div className='flex justify-between text-xs text-muted-foreground'>
-                      <span>Low Risk</span>
-                      <span>High Risk</span>
+                      <span>Low</span>
+                      <span>High</span>
                     </div>
                   </div>
                 );
@@ -172,7 +172,7 @@ const totalConsequence = factors?factors.length * 10:0;
                     </span>
                   </p>
                 </div>
-                <RiskBadge score={overallScore} />
+                <RiskBadge score={100*overallScore/totalConsequence} />
               </div>
             </CardContent>
           </Card>
