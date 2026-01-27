@@ -217,4 +217,16 @@ This starts the frontend (and any dev tooling) and connects it to the backend.
 
 If all steps completed successfully, the app should now be running locally with a connected PostgreSQL backend.
 
+# Assumptions 
 
+## Risk weighting
+
+*Risks are calculated with the standard formula Consequence\*Probability=Risk
+*The consequence is a value between 1 and 10
+**This is set for each factor and is the same across projects
+*Probability allows the users to weight the factors differently across projects
+*The final risk score is the sum of the Consequence\*Probability for all factors for the project
+
+## Limitations
+
+*User creation and authentication is not a part of the project
