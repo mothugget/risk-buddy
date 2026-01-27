@@ -4,22 +4,6 @@ import type { Project, Factor, Score, ProjectWithScores, CreateProjectInput } fr
 
 const router = Router();
 
-// Helper to calculate overall score
-function calculateOverallScore(scores: (Score & { factor: Factor })[]): number {
-  if (scores.length === 0) return 0;
-  
-  const totalConsequence = scores.reduce((sum, s) => sum + (s.factor?.consequence || 0), 0);
-  if (totalConsequence === 0) return 0;
-
-  let consequenceSum = 0;
-  scores.forEach((score) => {
-    const normalizedConsequence = (score.factor?.consequence || 0) / totalConsequence;
-    consequenceSum += score.score * normalizedConsequence;
-  });
-  
-  return consequenceSum;
-}
-
 // GET all projects with scores
 router.get('/', async (req, res) => {
   try {
@@ -45,8 +29,7 @@ router.get('/', async (req, res) => {
         
         return {
           ...project,
-          scores,
-          overall_score: calculateOverallScore(scores),
+          scores
         };
       })
     );
@@ -91,7 +74,6 @@ router.get('/:id', async (req, res) => {
     const projectWithScores: ProjectWithScores = {
       ...project,
       scores,
-      overall_score: calculateOverallScore(scores),
     };
 
     res.json(projectWithScores);

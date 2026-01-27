@@ -9,6 +9,7 @@ export interface Project {
   id: string;
   name: string;
   created_at: string;
+  overall_score: number;
 }
 
 export interface Score {
