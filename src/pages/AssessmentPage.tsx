@@ -25,17 +25,15 @@ export default function AssessmentPage() {
   // Calculate overall Consequence X score
   const calculateOverallScore = () => {
     if (!factors || factors.length === 0) return 0;
-    const totalConsequence = factors.reduce((sum, f) => sum + f.consequence, 0);
-    if (totalConsequence === 0) return 0;
-
     let consequenceSum = 0;
     factors.forEach((factor) => {
-      const score = scores[factor.id] ?? 50;
-      const normalizedConsequence = factor.consequence / totalConsequence;
-      consequenceSum += score * normalizedConsequence;
+      const score = scores[factor.id] ?? 0;
+      consequenceSum += score * factor.consequence/100;
     });
     return consequenceSum;
   };
+
+const totalConsequence = factors.length * 10;
 
   const overallScore = calculateOverallScore();
 
@@ -101,25 +99,25 @@ export default function AssessmentPage() {
 
   return (
     <Layout>
-      <div className="max-w-2xl mx-auto space-y-6">
+      <div className='max-w-2xl mx-auto space-y-6'>
         <div>
-          <h1 className="text-3xl font-bold">New Assessment</h1>
-          <p className="text-muted-foreground mt-1">
+          <h1 className='text-3xl font-bold'>New Assessment</h1>
+          <p className='text-muted-foreground mt-1'>
             Score each factor from 0 (lowest risk) to 100 (highest risk).
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className='space-y-6'>
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Project Information</CardTitle>
+              <CardTitle className='text-lg'>Project Information</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                <Label htmlFor="projectName">Project Name</Label>
+              <div className='space-y-2'>
+                <Label htmlFor='projectName'>Project Name</Label>
                 <Input
-                  id="projectName"
-                  placeholder="e.g., lodash, react, express"
+                  id='projectName'
+                  placeholder='e.g., lodash, react, express'
                   value={projectName}
                   onChange={(e) => setProjectName(e.target.value)}
                   maxLength={100}
@@ -130,26 +128,26 @@ export default function AssessmentPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Factor Scores</CardTitle>
+              <CardTitle className='text-lg'>Factor Scores</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className='space-y-6'>
               {factors.map((factor) => {
-                const score = scores[factor.id] ?? 50;
+                const score = scores[factor.id] ?? 0;
                 const { color } = getRiskLevel(score);
                 return (
-                  <div key={factor.id} className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <Label className="text-base">{factor.name}</Label>
-                      <span className="text-lg font-semibold">{score}</span>
+                  <div key={factor.id} className='space-y-3'>
+                    <div className='flex items-center justify-between'>
+                      <Label className='text-base'>{factor.name}</Label>
+                      <span className='text-lg font-semibold'>{score}</span>
                     </div>
                     <Slider
                       value={[score]}
                       onValueChange={([value]) => updateScore(factor.id, value)}
                       max={100}
                       step={1}
-                      className="w-full"
+                      className='w-full'
                     />
-                    <div className="flex justify-between text-xs text-muted-foreground">
+                    <div className='flex justify-between text-xs text-muted-foreground'>
                       <span>Low Risk</span>
                       <span>High Risk</span>
                     </div>
@@ -159,12 +157,21 @@ export default function AssessmentPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-muted/50">
-            <CardContent className="py-6">
-              <div className="flex items-center justify-between">
+          <Card className='bg-muted/50'>
+            <CardContent className='py-6'>
+              <div className='flex items-center justify-between'>
                 <div>
-                  <p className="text-sm text-muted-foreground">Overall Risk Score</p>
-                  <p className="text-4xl font-bold">{Math.round(overallScore)}</p>
+                  <p className='text-sm text-muted-foreground'>
+                    Overall Risk Score
+                  </p>
+                  <p>
+                    <span className='text-4xl font-bold'>
+                      {Math.round(overallScore)}
+                    </span>
+                    <span className='ml-2 text-xs text-muted-foreground/70'>
+                      Max score: {totalConsequence}
+                    </span>
+                  </p>
                 </div>
                 <RiskBadge score={overallScore} />
               </div>
@@ -172,15 +179,15 @@ export default function AssessmentPage() {
           </Card>
 
           <Button
-            type="submit"
-            className="w-full"
-            size="lg"
+            type='submit'
+            className='w-full'
+            size='lg'
             disabled={!projectName.trim() || createProject.isPending}
           >
             {createProject.isPending ? (
-              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              <Loader2 className='h-4 w-4 animate-spin mr-2' />
             ) : (
-              <Save className="h-4 w-4 mr-2" />
+              <Save className='h-4 w-4 mr-2' />
             )}
             Save Assessment
           </Button>
