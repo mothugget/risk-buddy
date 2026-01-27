@@ -217,5 +217,4 @@ This starts the frontend (and any dev tooling) and connects it to the backend.
 
 If all steps completed successfully, the app should now be running locally with a connected PostgreSQL backend.
 
-Happy hacking!
 
