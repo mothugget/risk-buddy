@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS scores (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     project_id UUID NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     factor_id UUID NOT NULL REFERENCES factors(id) ON DELETE CASCADE,
-    score INTEGER NOT NULL CHECK (score >= 0 AND score <= 100),
+    probability INTEGER NOT NULL CHECK (probability >= 0 AND probability <= 100),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     UNIQUE(project_id, factor_id)
 );

@@ -23,7 +23,7 @@ function normalizeFactor(api: FactorApi): Factor {
 function normalizeScore(api: ScoreApi): Score {
   return {
     ...api,
-    score: Number(api.score),
+    probability: Number(api.probability),
     factor: api.factor ? normalizeFactor(api.factor) : undefined,
   };
 }

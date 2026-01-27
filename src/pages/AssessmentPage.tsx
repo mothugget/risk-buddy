@@ -43,7 +43,7 @@ const totalConsequence = factors?factors.length * 10:0;
 
     const scoreData = factors.map((factor) => ({
       factor_id: factor.id,
-      score: scores[factor.id] ?? 50,
+      probability: scores[factor.id] ?? 50,
     }));
     console.log(overallScore)
     createProject.mutate(

@@ -106,8 +106,8 @@ router.post('/', async (req, res) => {
     // Create scores
     for (const score of scores) {
       await client.query(
-        'INSERT INTO scores (project_id, factor_id, score) VALUES ($1, $2, $3)',
-        [project.id, score.factor_id, score.score]
+        'INSERT INTO scores (project_id, factor_id, probability) VALUES ($1, $2, $3)',
+        [project.id, score.factor_id, score.probability]
       );
     }
 

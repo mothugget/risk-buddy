@@ -18,7 +18,7 @@ export interface Score {
   id: string;
   project_id: string;
   factor_id: string;
-  score: number;
+  probability: number;
   factor?: Factor;
 }
 
@@ -40,7 +40,7 @@ export interface UpdateFactorInput {
 export interface CreateProjectInput {
   name: string;
   overall_score: number;
-  scores: { factor_id: string; score: number }[];
+  scores: { factor_id: string; probability: number }[];
 }
 
 export interface FactorApi {
@@ -62,6 +62,6 @@ export interface ScoreApi {
   id: string;
   project_id: string;
   factor_id: string;
-  score: string | number;
+  probability: string | number;
   factor?: FactorApi;
 }

@@ -54,7 +54,7 @@ export default function ResultsPage() {
   const contributions = project.scores.map((score) => {
     const consequence = score.factor?.consequence || 0;
     const normalizedconsequence = totalConsequence > 0 ? (consequence / totalConsequence) * 100 : 0;
-    const contribution = (score.score * normalizedconsequence) / 100;
+    const contribution = (score.probability * normalizedconsequence) / 100;
     return {
       ...score,
       normalizedconsequence,
@@ -124,7 +124,7 @@ export default function ResultsPage() {
                       {item.factor?.name || 'Unknown Factor'}
                     </TableCell>
                     <TableCell className='text-center'>
-                      <RiskBadge score={item.score} showLabel={false} />
+                      <RiskBadge score={item.probability} showLabel={false} />
                     </TableCell>
                     <TableCell className='text-center text-muted-foreground'>
                       {item.normalizedconsequence.toFixed(1)}%
