@@ -80,7 +80,7 @@ export default function HistoryPage() {
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold">{Math.round(project.overall_score)}</p>
-                      <RiskBadge score={project.overall_score} />
+                      <RiskBadge score={10*project.overall_score/project.scores.length} />
                     </div>
                     <div className="flex gap-1">
                       <Button size="icon" variant="ghost" asChild>
