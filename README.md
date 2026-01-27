@@ -1,73 +1,221 @@
-# Welcome to your Lovable project
+# Project Setup & Run Guide
 
-## Project info
+This README walks you through setting up the development environment and running the app from scratch. It assumes you are on macOS or Linux. Windows users can follow the same steps using WSL2 or PowerShell equivalents.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## Prerequisites
 
-There are several ways of editing your application.
+Make sure the following are installed on your system:
 
-**Use Lovable**
+* **Node.js** (v18+ recommended)
+* **npm** (comes with Node.js)
+* **PostgreSQL** (v14+ recommended)
+* **Git**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+You can verify installs with:
 
-Changes made via Lovable will be committed automatically to this repo.
+```bash
+node -v
+npm -v
+psql --version
+```
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 1. Create the Backend `.env` File
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Navigate to the `backend` directory and create a `.env` file:
 
-Follow these steps:
+```bash
+cd backend
+touch .env
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+Add the following contents (replace `username` and `password` with your own values):
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+```env
+DATABASE_URL=postgresql://username:password@localhost:5432/oss_risk_scorer
+PORT=3001
+```
 
-# Step 3: Install the necessary dependencies.
-npm i
+⚠️ **Important:** PostgreSQL does not like capital letters in usernames or database names. Keep everything lowercase.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+---
+
+## 2. Install PostgreSQL
+
+### macOS (Homebrew)
+
+```bash
+brew install postgresql
+brew services start postgresql
+```
+
+### Ubuntu / Debian
+
+```bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib
+sudo service postgresql start
+```
+
+---
+
+## 3. Connect to PostgreSQL
+
+Log into the default PostgreSQL database:
+
+```bash
+psql postgres
+```
+
+If that fails, try:
+
+```bash
+psql -U postgres
+```
+
+---
+
+## 4. Create Database and User
+
+Inside the `psql` prompt, run the following commands (replace `username` and `password` to match your `.env` file):
+
+```sql
+CREATE USER username WITH PASSWORD 'password';
+
+CREATE DATABASE oss_risk_scorer OWNER username;
+```
+
+---
+
+## 5. Grant Full Permissions
+
+Grant the user full access to the database and all tables:
+
+```sql
+GRANT ALL PRIVILEGES ON DATABASE oss_risk_scorer TO username;
+```
+
+Then connect to the database:
+
+```sql
+\c oss_risk_scorer
+```
+
+Grant permissions on existing and future tables:
+
+```sql
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO username;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO username;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT ALL ON TABLES TO username;
+```
+
+Exit psql:
+
+```sql
+\q
+```
+
+---
+
+## 6. Load the Database Schema
+
+From the project root or backend directory, run:
+
+```bash
+psql postgresql://username:password@localhost:5432/oss_risk_scorer \
+  -f backend/schema.sql
+```
+
+This creates all required tables and schema.
+
+---
+
+## 7. Install Node Dependencies
+
+### Install root dependencies
+
+From the project root:
+
+```bash
+npm install
+```
+
+### Install backend dependencies
+
+```bash
+cd backend
+npm install
+```
+
+---
+
+## 8. Compile TypeScript (Backend)
+
+Still in the `backend` directory:
+
+```bash
+npx tsc
+```
+
+This checks types and builds the backend.
+
+---
+
+## 9. Start the Backend Server
+
+From the `backend` directory:
+
+```bash
+npx ts-node src/index.ts
+```
+
+The backend should now be running on:
+
+```
+http://localhost:3001
+```
+
+---
+
+## 10. Start the Full App (Dev Mode)
+
+Open a **new terminal window**, go to the project root, and run:
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+This starts the frontend (and any dev tooling) and connects it to the backend.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
 
-**Use GitHub Codespaces**
+## 11. Common Issues
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Database connection errors
 
-## What technologies are used for this project?
+* Double-check `.env` values
+* Make sure PostgreSQL is running
+* Ensure username/database names are lowercase
 
-This project is built with:
+### Permission errors
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+* Re-run the GRANT statements
+* Verify the database owner is set correctly
 
-## How can I deploy this project?
+### Port conflicts
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+* Make sure port `3001` is not already in use
 
-## Can I connect a custom domain to my Lovable project?
+---
 
-Yes, you can!
+## 12. You're Good to Go 🚀
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+If all steps completed successfully, the app should now be running locally with a connected PostgreSQL backend.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Happy hacking!
+
