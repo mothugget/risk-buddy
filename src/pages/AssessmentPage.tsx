@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { calculateOverallScore } from "@/lib/utils";
 import { useFactors } from "@/hooks/useFactors";
 import { useCreateProject } from "@/hooks/useProjects";
 import { Loader2, AlertCircle, Save } from "lucide-react";
@@ -22,21 +23,14 @@ export default function AssessmentPage() {
     setScores((prev) => ({ ...prev, [factorId]: value }));
   };
 
-  // Calculate overall Consequence X score
-  const calculateOverallScore = () => {
-    if (!factors || factors.length === 0) return 0;
-    let consequenceSum = 0;
-    factors.forEach((factor) => {
-      const score = scores[factor.id] ?? 0;
-      consequenceSum += score * factor.consequence/100;
-    });
-    return consequenceSum;
-  };
+  // Calculate overall Consequence X Probability
+
 
 const totalConsequence = factors?factors.length * 10:0;
+console.log(factors)
 
-  const overallScore = calculateOverallScore();
-
+  const overallScore = calculateOverallScore(factors,scores);
+console.log(scores)
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!projectName.trim() || !factors?.length) return;
