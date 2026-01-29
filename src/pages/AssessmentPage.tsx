@@ -27,10 +27,10 @@ export default function AssessmentPage() {
 
 
 const totalConsequence = factors?factors.length * 10:0;
-console.log(factors)
+
 
   const overallScore = calculateOverallScore(factors,scores);
-console.log(scores)
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!projectName.trim() || !factors?.length) return;
