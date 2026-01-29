@@ -79,7 +79,7 @@ export const factorsApi = {
   },
 
   create: (data: CreateFactorInput) =>{
-    fetchApi<Factor>("/factors", {
+    return fetchApi<Factor>("/factors", {
       method: "POST",
       body: JSON.stringify(data),
     })},

@@ -14,7 +14,7 @@ export function useCreateFactor() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateFactorInput)=> factorsApi.create(data),
+    mutationFn: (data: CreateFactorInput) => { return factorsApi.create(data); },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["factors"] });
       toast({ title: "Factor created successfully" });

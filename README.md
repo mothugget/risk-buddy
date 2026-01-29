@@ -223,7 +223,8 @@ If all steps completed successfully, the app should now be running locally with 
 
 * Risks are calculated with the standard formula Consequence\* Probability=Risk
 * The consequence is a value between 1 and 10
-** This is set for each factor and is the same across projects
+  * This is set for each factor and is the same across projects
+  * This is to be done at the start of the assessment, before any projects are created. Future feature: support modifying factors of past assessments 
 * Probability allows the users to weight the factors differently across projects
 * The final risk score is the sum of the Consequence\*Probability for all factors for the project
 
