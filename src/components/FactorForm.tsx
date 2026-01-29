@@ -25,7 +25,7 @@ const queryClient = useQueryClient();
         onSuccess: () => {
           setName("");
           setConsequence("");
-          queryClient.invalidateQueries(['factors']);
+          queryClient.invalidateQueries({queryKey:['factors']});
         },
       }
     );
