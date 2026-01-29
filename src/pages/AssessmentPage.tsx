@@ -1,22 +1,22 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Layout } from "@/components/Layout";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
-import { calculateOverallScore } from "@/lib/utils";
-import { useFactors } from "@/hooks/useFactors";
-import { useCreateProject } from "@/hooks/useProjects";
-import { Loader2, AlertCircle, Save } from "lucide-react";
-import { RiskBadge, getRiskLevel } from "@/components/RiskBadge";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Layout } from '@/components/Layout';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
+import { calculateOverallScore } from '@/lib/utils';
+import { useFactors } from '@/hooks/useFactors';
+import { useCreateProject } from '@/hooks/useProjects';
+import { Loader2, AlertCircle, Save } from 'lucide-react';
+import { RiskBadge, getRiskLevel } from '@/components/RiskBadge';
 
 export default function AssessmentPage() {
   const navigate = useNavigate();
   const { data: factors, isLoading, error } = useFactors();
   const createProject = useCreateProject();
-  const [projectName, setProjectName] = useState("");
+  const [projectName, setProjectName] = useState('');
   const [scores, setScores] = useState<Record<string, number>>({});
 
   const updateScore = (factorId: string, value: number) => {
@@ -25,11 +25,9 @@ export default function AssessmentPage() {
 
   // Calculate overall Consequence X Probability
 
+  const totalConsequence = factors ? factors.length * 10 : 0;
 
-const totalConsequence = factors?factors.length * 10:0;
-
-
-  const overallScore = calculateOverallScore(factors,scores);
+  const overallScore = calculateOverallScore(factors, scores);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,10 +38,14 @@ const totalConsequence = factors?factors.length * 10:0;
       probability: scores[factor.id] ?? 50,
     }));
     createProject.mutate(
-      { name: projectName.trim(), scores: scoreData, overall_score:overallScore},
+      {
+        name: projectName.trim(),
+        scores: scoreData,
+        overall_score: overallScore,
+      },
       {
         onSuccess: () => {
-          navigate("/history");
+          navigate('/history');
         },
       }
     );
@@ -52,8 +54,8 @@ const totalConsequence = factors?factors.length * 10:0;
   if (isLoading) {
     return (
       <Layout>
-        <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <div className='flex items-center justify-center py-16'>
+          <Loader2 className='h-8 w-8 animate-spin text-muted-foreground' />
         </div>
       </Layout>
     );
@@ -62,9 +64,9 @@ const totalConsequence = factors?factors.length * 10:0;
   if (error) {
     return (
       <Layout>
-        <Card className="max-w-2xl mx-auto">
-          <CardContent className="py-8 text-center text-destructive">
-            <AlertCircle className="h-8 w-8 mx-auto mb-2" />
+        <Card className='max-w-2xl mx-auto'>
+          <CardContent className='py-8 text-center text-destructive'>
+            <AlertCircle className='h-8 w-8 mx-auto mb-2' />
             Failed to load factors. Make sure the backend is running.
           </CardContent>
         </Card>
@@ -75,13 +77,13 @@ const totalConsequence = factors?factors.length * 10:0;
   if (!factors?.length) {
     return (
       <Layout>
-        <Card className="max-w-2xl mx-auto">
-          <CardContent className="py-8 text-center">
-            <AlertCircle className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-            <p className="text-muted-foreground">
+        <Card className='max-w-2xl mx-auto'>
+          <CardContent className='py-8 text-center'>
+            <AlertCircle className='h-8 w-8 mx-auto mb-2 text-muted-foreground' />
+            <p className='text-muted-foreground'>
               No risk factors defined yet. Please add factors first.
             </p>
-            <Button className="mt-4" onClick={() => navigate("/")}>
+            <Button className='mt-4' onClick={() => navigate('/')}>
               Go to Factors
             </Button>
           </CardContent>
@@ -166,7 +168,7 @@ const totalConsequence = factors?factors.length * 10:0;
                     </span>
                   </p>
                 </div>
-                <RiskBadge score={100*overallScore/totalConsequence} />
+                <RiskBadge score={(100 * overallScore) / totalConsequence} />
               </div>
             </CardContent>
           </Card>
